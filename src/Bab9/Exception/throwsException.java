@@ -17,7 +17,7 @@ public class throwsException {
   public static void main(String[] args) {
     try {
       throwsException.Error();
-    } catch(Exception e) {
+    } catch(Exception e) { 
       e.printStackTrace();
     }
   }
