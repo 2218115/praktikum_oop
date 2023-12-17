@@ -30,41 +30,41 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
         tampil();
     }
     public Connection conn;
-    public void koneksi() throws SQLException {
-        try {
-            conn = null;
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/oop_2218115?user=root&password=");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException e) {
-            Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, e);
-        } catch (Exception es) {
-            Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, es);
-        }
+public void koneksi() throws SQLException {
+    try {
+        conn = null;
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/oop_2218115?user=root&password=");
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException e) {
+        Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, e);
+    } catch (Exception es) {
+        Logger.getLogger(GUI_Mahasiswa.class.getName()).log(Level.SEVERE, null, es);
     }
+}
     
-    public void tampil() {
-        DefaultTableModel tabelhead = new DefaultTableModel();
-        tabelhead.addColumn("NIM");
-        tabelhead.addColumn("NAMA");
-        tabelhead.addColumn("JENIS KELAMIN");
-        tabelhead.addColumn("PRODI");
-        tabelhead.addColumn("ANGKATAN");
-        tabelhead.addColumn("ALAMAT");
-        try {
-            koneksi();
-            String sql = "SELECT * FROM tb_mahasiswa";
-            Statement stat = conn.createStatement();
-            ResultSet res = stat.executeQuery(sql);
-            while (res.next()) {
-                tabelhead.addRow(new Object[]{res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7),});
-            }
-            table_data_mahasiswa.setModel(tabelhead);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
+public void tampil() {
+    DefaultTableModel tabelhead = new DefaultTableModel();
+    tabelhead.addColumn("NIM");
+    tabelhead.addColumn("NAMA");
+    tabelhead.addColumn("JENIS KELAMIN");
+    tabelhead.addColumn("PRODI");
+    tabelhead.addColumn("ANGKATAN");
+    tabelhead.addColumn("ALAMAT");
+    try {
+        koneksi();
+        String sql = "SELECT * FROM tb_mahasiswa";
+        Statement stat = conn.createStatement();
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            tabelhead.addRow(new Object[]{res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7),});
         }
+        table_data_mahasiswa.setModel(tabelhead);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
     }
+}
     
 
     
@@ -105,79 +105,79 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
     //masukkan method tampil()
     
     //masukkan method delete()
-    public void delete() {
-        int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            try {
-                String sql = "DELETE FROM tb_mahasiswa WHERE nim='" + txtNim.getText() + "'";
-                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
-                batal();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data gagal di hapus");
-            }
+public void delete() {
+    int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+    if (ok == 0) {
+        try {
+            String sql = "DELETE FROM tb_mahasiswa WHERE nim='" + txtNim.getText() + "'";
+            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
+            batal();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data gagal di hapus");
         }
-        refresh();
     }
+    refresh();
+}
 
     
     //masukkan method cari()
-    public void cari() {
-        try {
-            try ( Statement statement = conn.createStatement()) {
-                String sql = "SELECT * FROM tb_mahasiswa WHERE `nim`  LIKE '%" + txtSearch.getText() + "%'";
-                ResultSet rs = statement.executeQuery(sql); //menampilkan data dari sql query
-                if (rs.next()) // .next() = scanner method
-                {
-                    txtNim.setText(rs.getString(2));
-                    txtNama.setText(rs.getString(3));
-                    String jk = rs.getString(4);
-                    if (jk.equalsIgnoreCase("L")) {
-                        radiobtnLaki.setSelected(true);
-                    } else {
-                        radiobtnPerempuan.setSelected(true);
-                    }
-                    txtProdi.setText(rs.getString(4));
-                    txtAngkatan.setText(rs.getString(5));
-                    txtAlamat.setText(rs.getString(6));
+public void cari() {
+    try {
+        try ( Statement statement = conn.createStatement()) {
+            String sql = "SELECT * FROM tb_mahasiswa WHERE `nim`  LIKE '%" + txtSearch.getText() + "%'";
+            ResultSet rs = statement.executeQuery(sql); //menampilkan data dari sql query
+            if (rs.next()) // .next() = scanner method
+            {
+                txtNim.setText(rs.getString(2));
+                txtNama.setText(rs.getString(3));
+                String jk = rs.getString(4);
+                if (jk.equalsIgnoreCase("L")) {
+                    radiobtnLaki.setSelected(true);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
+                    radiobtnPerempuan.setSelected(true);
                 }
+                txtProdi.setText(rs.getString(4));
+                txtAngkatan.setText(rs.getString(5));
+                txtAlamat.setText(rs.getString(6));
+            } else {
+                JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
             }
-        } catch (Exception ex) {
-            System.out.println("Error." + ex);
         }
+    } catch (Exception ex) {
+        System.out.println("Error." + ex);
     }
+}
 
     
     //masukkan method update()
-    public void update() {
-        String Nim = txtNim.getText();
-        String Nama = txtNama.getText();
-        String jk;
-        if (radiobtnLaki.isSelected()) {
-            jk = "L";
-        } else {
-            jk = "P";
-        }
-        String Prodi = txtProdi.getText();
-        String Ang = txtAngkatan.getText();
-        String alamat = txtAlamat.getText();
-        String Nimlama = nim1;
-        try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE tb_mahasiswa SET nim='" + Nim + "'," + "nama='" + Nama + "',"
-                    + "jk='" + jk + "'" + ",prodi='" + Prodi + "',alamat='" + alamat + "',th_angkatan='"
-                    + Ang + "' WHERE nim = '" + Nimlama + "'");
-            statement.close();
-            conn.close();
-            JOptionPane.showMessageDialog(null, "Update Data Mahasiswa Berhasil!");
-        } catch (Exception e) {
-            System.out.println("Error : " + e);
-        }
-        refresh();
+public void update() {
+    String Nim = txtNim.getText();
+    String Nama = txtNama.getText();
+    String jk;
+    if (radiobtnLaki.isSelected()) {
+        jk = "L";
+    } else {
+        jk = "P";
     }
+    String Prodi = txtProdi.getText();
+    String Ang = txtAngkatan.getText();
+    String alamat = txtAlamat.getText();
+    String Nimlama = nim1;
+    try {
+        Statement statement = conn.createStatement();
+        statement.executeUpdate("UPDATE tb_mahasiswa SET nim='" + Nim + "'," + "nama='" + Nama + "',"
+                + "jk='" + jk + "'" + ",prodi='" + Prodi + "',alamat='" + alamat + "',th_angkatan='"
+                + Ang + "' WHERE nim = '" + Nimlama + "'");
+        statement.close();
+        conn.close();
+        JOptionPane.showMessageDialog(null, "Update Data Mahasiswa Berhasil!");
+    } catch (Exception e) {
+        System.out.println("Error : " + e);
+    }
+    refresh();
+}
 
     
     //masukkan method refresh()
@@ -187,30 +187,30 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
     }
     
     //masukkan method insert()
-    public void insert() {
-        String Nim = txtNim.getText();
-        String Nama = txtNama.getText();
-        String jk;
-        if (radiobtnLaki.isSelected()) {
-            jk = "L";
-        } else {
-            jk = "P";
-        }
-        String Prodi = txtProdi.getText();
-        String Ang = txtAngkatan.getText();
-        String alamat = txtAlamat.getText();
-        try {
-            koneksi();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("INSERT INTO tb_mahasiswa (nim, nama,jk, prodi, th_angkatan,alamat)"
-                    + "VALUES('" + Nim + "','" + Nama + "','" + jk + "','" + Prodi + "','" + Ang + "','" + alamat + "')");
-            statement.close();
-            JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Mahasiswa!" + "\n" + alamat);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
-        }
-        refresh();
+public void insert() {
+    String Nim = txtNim.getText();
+    String Nama = txtNama.getText();
+    String jk;
+    if (radiobtnLaki.isSelected()) {
+        jk = "L";
+    } else {
+        jk = "P";
     }
+    String Prodi = txtProdi.getText();
+    String Ang = txtAngkatan.getText();
+    String alamat = txtAlamat.getText();
+    try {
+        koneksi();
+        Statement statement = conn.createStatement();
+        statement.executeUpdate("INSERT INTO tb_mahasiswa (nim, nama,jk, prodi, th_angkatan,alamat)"
+                + "VALUES('" + Nim + "','" + Nama + "','" + jk + "','" + Prodi + "','" + Ang + "','" + alamat + "')");
+        statement.close();
+        JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Mahasiswa!" + "\n" + alamat);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
+    }
+    refresh();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -461,10 +461,7 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
     }//GEN-LAST:event_radiobtnPerempuanActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:
-        //masukkan method import
         insert();
-
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -474,7 +471,6 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
-        // TODO add your handling code here:
         batal();
     }//GEN-LAST:event_btnBatalActionPerformed
 
@@ -492,24 +488,15 @@ public class GUI_Mahasiswa extends javax.swing.JFrame {
     }//GEN-LAST:event_table_data_mahasiswaMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-        //masukkan method update()
         update();
-
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
-        //masukkan method delete()
         delete();
-
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-        //  masukkan method cari()
         cari();
-
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnPenilaianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPenilaianActionPerformed

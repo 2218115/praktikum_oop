@@ -107,119 +107,119 @@ public class GUI_Pemasok extends javax.swing.JFrame {
     }
   }
   
-  // tampilkan semua data
-  private void queryTampilkanKeTabel() {
-    final String SELECT_QUERY = "SELECT * FROM tb_pemasoks";
-    try {
-      Statement st = conn.createStatement();
-      ResultSet rs = st.executeQuery(SELECT_QUERY);
-      bersihkanTabel();
-      while(rs.next()) {
-        String[] data = new String[4];
-        data[0] = rs.getString("id");
-        data[1] = rs.getString("nama_pemasok");
-        data[2] = rs.getString("alamat_pemasok");
-        data[3] = rs.getString("telepon_pemasok");
-        tampilkanDataPadaTabel(data);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+// tampilkan semua data
+private void queryTampilkanKeTabel() {
+  final String SELECT_QUERY = "SELECT * FROM tb_pemasoks";
+  try {
+    Statement st = conn.createStatement();
+    ResultSet rs = st.executeQuery(SELECT_QUERY);
+    bersihkanTabel();
+    while(rs.next()) {
+      String[] data = new String[4];
+      data[0] = rs.getString("id");
+      data[1] = rs.getString("nama_pemasok");
+      data[2] = rs.getString("alamat_pemasok");
+      data[3] = rs.getString("telepon_pemasok");
+      tampilkanDataPadaTabel(data);
     }
+  } catch (SQLException e) {
+    e.printStackTrace();
   }
+}
   
-  // cari
-  private void queryCariPemasok() {
-    final String SELECT_QUERY = "SELECT * FROM tb_pemasoks where nama_pemasok LIKE ?";
-    String cari = tfSearch.getText();
-    try {
-      PreparedStatement st = conn.prepareStatement(SELECT_QUERY);
-      st.setString(1, "%"+cari+"%");
-      ResultSet rs = st.executeQuery();
-      bersihkanTabel();
-      while(rs.next()) {
-        String[] data = new String[4];
-        data[0] = rs.getString("id");
-        data[1] = rs.getString("nama_pemasok");
-        data[2] = rs.getString("alamat_pemasok");
-        data[3] = rs.getString("telepon_pemasok");
-        tampilkanDataPadaTabel(data);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+// cari
+private void queryCariPemasok() {
+  final String SELECT_QUERY = "SELECT * FROM tb_pemasoks where nama_pemasok LIKE ?";
+  String cari = tfSearch.getText();
+  try {
+    PreparedStatement st = conn.prepareStatement(SELECT_QUERY);
+    st.setString(1, "%"+cari+"%");
+    ResultSet rs = st.executeQuery();
+    bersihkanTabel();
+    while(rs.next()) {
+      String[] data = new String[4];
+      data[0] = rs.getString("id");
+      data[1] = rs.getString("nama_pemasok");
+      data[2] = rs.getString("alamat_pemasok");
+      data[3] = rs.getString("telepon_pemasok");
+      tampilkanDataPadaTabel(data);
     }
+  } catch (SQLException e) {
+    e.printStackTrace();
   }
+}
   
-  // update barang
-  private void queryUpdatePemasok() {
-    final String UPDATE_QUERY = "UPDATE tb_pemasoks SET nama_pemasok = ?, alamat_pemasok = ?, telepon_pemasok = ? WHERE id = ?";
-    
-    String id = ambilIdTerpilihPadaTabel();
-    if (id == null) {
-      return;
-    }
-    
-    String namaPemasok = tfNama.getText();
-    String alamatPemasok = tfAlamat.getText();
-    String teleponPemasok = tfTelepon.getText();
-    
-    try {
-      PreparedStatement st = conn.prepareStatement(UPDATE_QUERY);
-      st.setString(1, namaPemasok);
-      st.setString(2, alamatPemasok);
-      st.setString(3, teleponPemasok);
-      st.setString(4, id);
-      st.execute();
-      
-      JOptionPane.showMessageDialog(this, "Data Pemasok Terupdate", "INFORMASI", JOptionPane.INFORMATION_MESSAGE);
-      queryTampilkanKeTabel();
-      hapusMasukan();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+// update barang
+private void queryUpdatePemasok() {
+  final String UPDATE_QUERY = "UPDATE tb_pemasoks SET nama_pemasok = ?, alamat_pemasok = ?, telepon_pemasok = ? WHERE id = ?";
+
+  String id = ambilIdTerpilihPadaTabel();
+  if (id == null) {
+    return;
   }
-  
-  // tambahkan data barang
-  private void queryInsertPemasok() {
-    final String INSERT_QUERY = "INSERT INTO tb_pemasoks (nama_pemasok, alamat_pemasok, telepon_pemasok) VALUES (?, ?, ?)";
-    String namaPemasok = tfNama.getText();
-    String alamatPemasok = tfAlamat.getText();
-    String teleponPemasok = tfTelepon.getText();
-    try {
-      PreparedStatement st = conn.prepareStatement(INSERT_QUERY);
-      st.setString(1, namaPemasok);
-      st.setString(2, alamatPemasok);
-      st.setString(3, teleponPemasok);
-      st.execute();
-      
-      JOptionPane.showMessageDialog(this, "Data Pemasok Tersimpan", "INFORMASI", JOptionPane.INFORMATION_MESSAGE);
-      queryTampilkanKeTabel();
-      hapusMasukan();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-  
-  // hapus data barang
-  private void queryDeletePemasok() {
-    final String DELETE_QUERY = "DELETE FROM tb_pemasoks WHERE id = ?";
-   
-    String id = ambilIdTerpilihPadaTabel();
-    
-    int res = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data pemasok " + id + " ?", "PERINGATAN", JOptionPane.YES_NO_OPTION);
-    if (res == 1) {
-      return;
-    }
-    
-    try {
-      PreparedStatement st = conn.prepareStatement(DELETE_QUERY);
-      st.setString(1, id);
-      st.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    
+
+  String namaPemasok = tfNama.getText();
+  String alamatPemasok = tfAlamat.getText();
+  String teleponPemasok = tfTelepon.getText();
+
+  try {
+    PreparedStatement st = conn.prepareStatement(UPDATE_QUERY);
+    st.setString(1, namaPemasok);
+    st.setString(2, alamatPemasok);
+    st.setString(3, teleponPemasok);
+    st.setString(4, id);
+    st.execute();
+
+    JOptionPane.showMessageDialog(this, "Data Pemasok Terupdate", "INFORMASI", JOptionPane.INFORMATION_MESSAGE);
     queryTampilkanKeTabel();
+    hapusMasukan();
+  } catch (SQLException e) {
+    e.printStackTrace();
   }
+}
+  
+// tambahkan data barang
+private void queryInsertPemasok() {
+  final String INSERT_QUERY = "INSERT INTO tb_pemasoks (nama_pemasok, alamat_pemasok, telepon_pemasok) VALUES (?, ?, ?)";
+  String namaPemasok = tfNama.getText();
+  String alamatPemasok = tfAlamat.getText();
+  String teleponPemasok = tfTelepon.getText();
+  try {
+    PreparedStatement st = conn.prepareStatement(INSERT_QUERY);
+    st.setString(1, namaPemasok);
+    st.setString(2, alamatPemasok);
+    st.setString(3, teleponPemasok);
+    st.execute();
+
+    JOptionPane.showMessageDialog(this, "Data Pemasok Tersimpan", "INFORMASI", JOptionPane.INFORMATION_MESSAGE);
+    queryTampilkanKeTabel();
+    hapusMasukan();
+  } catch (SQLException e) {
+    e.printStackTrace();
+  }
+}
+  
+// hapus data barang
+private void queryDeletePemasok() {
+  final String DELETE_QUERY = "DELETE FROM tb_pemasoks WHERE id = ?";
+
+  String id = ambilIdTerpilihPadaTabel();
+
+  int res = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data pemasok " + id + " ?", "PERINGATAN", JOptionPane.YES_NO_OPTION);
+  if (res == 1) {
+    return;
+  }
+
+  try {
+    PreparedStatement st = conn.prepareStatement(DELETE_QUERY);
+    st.setString(1, id);
+    st.execute();
+  } catch (SQLException e) {
+    e.printStackTrace();
+  }
+
+  queryTampilkanKeTabel();
+}
   
   /**
    * This method is called from within the constructor to initialize the form.
@@ -430,7 +430,7 @@ public class GUI_Pemasok extends javax.swing.JFrame {
               .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
               .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
               .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
               .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))

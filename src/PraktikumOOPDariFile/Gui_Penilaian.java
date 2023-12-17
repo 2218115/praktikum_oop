@@ -40,46 +40,46 @@ public class Gui_Penilaian extends javax.swing.JFrame {
     //masukkan conection dibawah sini (public Connection conn;)
     public Connection conn;
     //masukkan method koneksi()
-    public void koneksi() throws SQLException {
-        try {
-            conn = null;
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/oop_2218115?user=root&password=");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException e) {
-            Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, e);
-        } catch (Exception es) {
-            Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, es);
-        }
+public void koneksi() throws SQLException {
+    try {
+        conn = null;
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/oop_2218115?user=root&password=");
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException e) {
+        Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, e);
+    } catch (Exception es) {
+        Logger.getLogger(Gui_Penilaian.class.getName()).log(Level.SEVERE, null, es);
     }
+}
 
     
     //masukkan method tampil()
-    public void tampil() {
-        DefaultTableModel tabelhead = new DefaultTableModel();
-        tabelhead.addColumn("NIM");
-        tabelhead.addColumn("Kode MK");
-        tabelhead.addColumn("NP1");
-        tabelhead.addColumn("NP2");
-        tabelhead.addColumn("UTS");
-        tabelhead.addColumn("NP3");
-        tabelhead.addColumn("PRAK");
-        tabelhead.addColumn("UAS");
-        tabelhead.addColumn("NA");
-        try {
-            koneksi();
-            String sql = "SELECT * FROM tb_nilai";
-            Statement stat = conn.createStatement();
-            ResultSet res = stat.executeQuery(sql);
-            while (res.next()) {
-                tabelhead.addRow(new Object[]{res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),});
-            }
-            tabel_data.setModel(tabelhead);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
+public void tampil() {
+    DefaultTableModel tabelhead = new DefaultTableModel();
+    tabelhead.addColumn("NIM");
+    tabelhead.addColumn("Kode MK");
+    tabelhead.addColumn("NP1");
+    tabelhead.addColumn("NP2");
+    tabelhead.addColumn("UTS");
+    tabelhead.addColumn("NP3");
+    tabelhead.addColumn("PRAK");
+    tabelhead.addColumn("UAS");
+    tabelhead.addColumn("NA");
+    try {
+        koneksi();
+        String sql = "SELECT * FROM tb_nilai";
+        Statement stat = conn.createStatement();
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            tabelhead.addRow(new Object[]{res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),});
         }
+        tabel_data.setModel(tabelhead);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
     }
+}
 
 
     //masukka method tampil_mhs() dibawah sini
@@ -123,65 +123,65 @@ public class Gui_Penilaian extends javax.swing.JFrame {
 
     
     //masukkan method refresh()
-    public void refresh() {
-        new Gui_Penilaian().setVisible(true);
-        this.setVisible(false);
-    }
+public void refresh() {
+    new Gui_Penilaian().setVisible(true);
+    this.setVisible(false);
+}
 
 
     //masukkan method insert()
-    public void insert() {
-        String Nim = (String) cmbNim.getSelectedItem();
-        String KodeMK = (String) cmbKodeMk.getSelectedItem();
-        String NP1 = txtNP1.getText();
-        String NP2 = txtNP2.getText();
-        String UTS = txtUts.getText();
-        String NP3 = txtNP3.getText();
-        String PRAK = txtPraktikum.getText();
-        String UAS = txtUas.getText();
-        String NA = txtNA.getText();
-        try {
-            koneksi();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("INSERT INTO tb_nilai(Nim, kd_mk, NP1, NP2, UTS,NP3,prak,UAS,NA)"
-                    + "VALUES('" + Nim + "','" + KodeMK + "','" + NP1 + "','" + NP2 + "','" + UTS + "','" + NP3 + "',"
-                    + "'" + PRAK + "','" + UAS + "','" + NA + "')");
-            statement.close();
-            JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Nilai!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
-        }
-        refresh();
+public void insert() {
+    String Nim = (String) cmbNim.getSelectedItem();
+    String KodeMK = (String) cmbKodeMk.getSelectedItem();
+    String NP1 = txtNP1.getText();
+    String NP2 = txtNP2.getText();
+    String UTS = txtUts.getText();
+    String NP3 = txtNP3.getText();
+    String PRAK = txtPraktikum.getText();
+    String UAS = txtUas.getText();
+    String NA = txtNA.getText();
+    try {
+        koneksi();
+        Statement statement = conn.createStatement();
+        statement.executeUpdate("INSERT INTO tb_nilai(Nim, kd_mk, NP1, NP2, UTS,NP3,prak,UAS,NA)"
+                + "VALUES('" + Nim + "','" + KodeMK + "','" + NP1 + "','" + NP2 + "','" + UTS + "','" + NP3 + "',"
+                + "'" + PRAK + "','" + UAS + "','" + NA + "')");
+        statement.close();
+        JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Nilai!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
     }
+    refresh();
+}
 
     
     //masukkan method update()  
-    public void update() {
-        String Nim = (String) cmbNim.getSelectedItem();
-        String KodeMK = (String) cmbKodeMk.getSelectedItem();
-        String NP1 = txtNP1.getText();
-        String NP2 = txtNP2.getText();
-        String UTS = txtUts.getText();
-        String NP3 = txtNP3.getText();
-        String PRAK = txtPraktikum.getText();
-        String UAS = txtUas.getText();
-        String NA = txtNA.getText();
+public void update() {
+    String Nim = (String) cmbNim.getSelectedItem();
+    String KodeMK = (String) cmbKodeMk.getSelectedItem();
+    String NP1 = txtNP1.getText();
+    String NP2 = txtNP2.getText();
+    String UTS = txtUts.getText();
+    String NP3 = txtNP3.getText();
+    String PRAK = txtPraktikum.getText();
+    String UAS = txtUas.getText();
+    String NA = txtNA.getText();
 
-        String nim_lama = nim1;
-        String kode_lama = kd_mk1;
+    String nim_lama = nim1;
+    String kode_lama = kd_mk1;
 
-        try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE tb_nilai SET Nim='" + Nim + "'," + "kd_mk='" + KodeMK + "'"
-                    + ",NP1='" + NP1 + "',NP2='" + NP2 + "',UTS='" + UTS + "',NP3='" + NP3 + "',prak='" + PRAK + "',UAS='" + UAS + "',NA='" + NA + "' WHERE Nim ='" + nim_lama + "' AND kd_mk='" + kode_lama + "'");
-            statement.close();
-            conn.close();
-            JOptionPane.showMessageDialog(null, "Update Data Nilai!");
-        } catch (Exception e) {
-            System.out.println("Error : " + e);
-        }
-        refresh();
+    try {
+        Statement statement = conn.createStatement();
+        statement.executeUpdate("UPDATE tb_nilai SET Nim='" + Nim + "'," + "kd_mk='" + KodeMK + "'"
+                + ",NP1='" + NP1 + "',NP2='" + NP2 + "',UTS='" + UTS + "',NP3='" + NP3 + "',prak='" + PRAK + "',UAS='" + UAS + "',NA='" + NA + "' WHERE Nim ='" + nim_lama + "' AND kd_mk='" + kode_lama + "'");
+        statement.close();
+        conn.close();
+        JOptionPane.showMessageDialog(null, "Update Data Nilai!");
+    } catch (Exception e) {
+        System.out.println("Error : " + e);
     }
+    refresh();
+}
 
     
     //masukkan method NilaiAkhir()
@@ -230,50 +230,50 @@ public class Gui_Penilaian extends javax.swing.JFrame {
 
     
     //masukkan method delete()
-    public void delete() {
-        int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            try {
-                String sql = "DELETE FROM tb_nilai WHERE Nim='" + cmbNim.getSelectedItem() + "' AND kd_mk='" + cmbKodeMk.getSelectedItem() + "'";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
-                batal();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data gagal di hapus");
-            }
+public void delete() {
+    int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+    if (ok == 0) {
+        try {
+            String sql = "DELETE FROM tb_nilai WHERE Nim='" + cmbNim.getSelectedItem() + "' AND kd_mk='" + cmbKodeMk.getSelectedItem() + "'";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
+            batal();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data gagal di hapus");
         }
-        refresh();
     }
+    refresh();
+}
 
 
     //masukkan method cari()
-    public void cari() {
-        try {
-            try ( Statement statement = conn.createStatement()) {
-                String sql = "SELECT * FROM tb_nilai WHERE `Nim` LIKE '%" + txtCari.getText() + "%'";
-                ResultSet rs = statement.executeQuery(sql);
-                //menampilkan data dari sql query
-                if (rs.next()) // .next() = scanner method
-                {
-                    cmbNim.setSelectedItem(rs.getString(2));
-                    cmbKodeMk.setSelectedItem(rs.getString(3));
-                    txtNP1.setText(rs.getString(4));
-                    txtNP2.setText(rs.getString(5));
-                    txtUts.setText(rs.getString(6));
-                    txtNP3.setText(rs.getString(7));
-                    txtPraktikum.setText(rs.getString(8));
-                    txtUas.setText(rs.getString(9));
-                    txtNA.setText(rs.getString(10));
+public void cari() {
+    try {
+        try ( Statement statement = conn.createStatement()) {
+            String sql = "SELECT * FROM tb_nilai WHERE `Nim` LIKE '%" + txtCari.getText() + "%'";
+            ResultSet rs = statement.executeQuery(sql);
+            //menampilkan data dari sql query
+            if (rs.next()) // .next() = scanner method
+            {
+                cmbNim.setSelectedItem(rs.getString(2));
+                cmbKodeMk.setSelectedItem(rs.getString(3));
+                txtNP1.setText(rs.getString(4));
+                txtNP2.setText(rs.getString(5));
+                txtUts.setText(rs.getString(6));
+                txtNP3.setText(rs.getString(7));
+                txtPraktikum.setText(rs.getString(8));
+                txtUas.setText(rs.getString(9));
+                txtNA.setText(rs.getString(10));
 
-                } else {
-                    JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
-                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
             }
-        } catch (Exception ex) {
-            System.out.println("Error." + ex);
         }
+    } catch (Exception ex) {
+        System.out.println("Error." + ex);
     }
+}
 
 
     /**
@@ -596,14 +596,13 @@ public class Gui_Penilaian extends javax.swing.JFrame {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
         //masukkan method batal();
-        
+        batal();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         //masukkan method insert();
-        insert();
-        
+        insert(); 
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed

@@ -35,7 +35,7 @@ public class GUI_Barang extends javax.swing.JFrame {
   } 
   
   private Connection conn = null;
-  int barisTerakhirDipilih = -1;
+  private int barisTerakhirDipilih = -1;
   
   private void inisialisasiKoneksi() {
     try {
@@ -243,28 +243,28 @@ public class GUI_Barang extends javax.swing.JFrame {
     }
   }
   
-  // hapus data barang
-  private void queryDeleteBarang() {
-    final String DELETE_QUERY = "DELETE FROM tb_barangs WHERE kode_barang = ?";
-   
-    String kodeTerpilih = ambilKodeTerpilihPadaTabel();
-    
-    int res = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data barang " + kodeTerpilih + " ?", "PERINGATAN", JOptionPane.YES_NO_OPTION);
-    if (res == 1) {
-      return;
-    }
-    
-    try {
-      PreparedStatement st = conn.prepareStatement(DELETE_QUERY);
-      st.setString(1, kodeTerpilih);
-      st.execute();
-      hapusMasukan();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    
-    queryTampilkanKeTabel();
+// hapus data barang
+private void queryDeleteBarang() {
+  final String DELETE_QUERY = "DELETE FROM tb_barangs WHERE kode_barang = ?";
+
+  String kodeTerpilih = ambilKodeTerpilihPadaTabel();
+
+  int res = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data barang " + kodeTerpilih + " ?", "PERINGATAN", JOptionPane.YES_NO_OPTION);
+  if (res == 1) {
+    return;
   }
+
+  try {
+    PreparedStatement st = conn.prepareStatement(DELETE_QUERY);
+    st.setString(1, kodeTerpilih);
+    st.execute();
+    hapusMasukan();
+  } catch (SQLException e) {
+    e.printStackTrace();
+  }
+
+  queryTampilkanKeTabel();
+}
   
   /**
    * This method is called from within the constructor to initialize the form.
@@ -346,6 +346,9 @@ public class GUI_Barang extends javax.swing.JFrame {
     tblInformasiBarang.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         tblInformasiBarangMouseClicked(evt);
+      }
+      public void mousePressed(java.awt.event.MouseEvent evt) {
+        tblInformasiBarangMousePressed(evt);
       }
     });
     jScrollPane2.setViewportView(tblInformasiBarang);
@@ -534,7 +537,6 @@ public class GUI_Barang extends javax.swing.JFrame {
 
   private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
     hapusMasukan();
-    tblInformasiBarang.clearSelection();
   }//GEN-LAST:event_btnBatalActionPerformed
 
   private void cbPemasokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPemasokActionPerformed
@@ -559,15 +561,18 @@ public class GUI_Barang extends javax.swing.JFrame {
   }//GEN-LAST:event_btnUpdateActionPerformed
 
   private void tblInformasiBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformasiBarangMouseClicked
-    ambilBarisTerpilihPadaTabel();
+    
   }//GEN-LAST:event_tblInformasiBarangMouseClicked
 
   private void btnFormPemasokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFormPemasokActionPerformed
-    // TODO add your handling code here:
     deinisialisasiKoneksi();
     dispose();
     new GUI_Pemasok().setVisible(true);
   }//GEN-LAST:event_btnFormPemasokActionPerformed
+
+  private void tblInformasiBarangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformasiBarangMousePressed
+    ambilBarisTerpilihPadaTabel();
+  }//GEN-LAST:event_tblInformasiBarangMousePressed
 
   /**
    * @param args the command line arguments
